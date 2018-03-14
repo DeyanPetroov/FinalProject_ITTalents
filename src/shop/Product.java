@@ -33,6 +33,7 @@ public class Product {
 		}
 	}
 
+	//now is null because of brand and model ---> should be fixed
 	public void setName() {
 		this.name = this.brand + this.model;
 	}
