@@ -1,7 +1,9 @@
 package people;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 import shop.Cart;
 import shop.Order;
@@ -9,14 +11,16 @@ import shop.Product;
 
 public class User {
 
+	private static final int MIN_PASSWORD_LENGTH = 5;
+
 	private String name;
 	private int age;
 	private String phone;
 	private String username;
 	private String password;
-	private Cart cart=new Cart();
+	private Cart cart = new Cart();
 	private boolean logged;
-	private Order order;
+	private Order order = new Order();
 	private ArrayList<Order> orders = new ArrayList<>();
 
 	public User(String username, String password) {
@@ -27,12 +31,21 @@ public class User {
 	}
 
 	public void order() {
+		String answer = null;
+		Scanner sc = new Scanner(System.in);
 		System.out.println("Do you want to finalize the order?");
-		// case yes
-		// move products from cart to order
-		order = new Order();
-		// remove products from cart
-		orders.add(order);
+		answer = sc.next();
+		sc.close();
+
+		switch (answer) {
+		case "yes":
+			// move products from cart to order
+			Map<Product, Integer> products = cart.getProducts();
+			order.setProducts(products);
+			// remove all products from cart
+			cart.emptyCart();
+			orders.add(order);
+		}
 	}
 
 	// public boolean isAdmin() {
@@ -46,17 +59,17 @@ public class User {
 	public String getUsername() {
 		return username;
 	}
-	
+
 	public Order getOrder() {
 		return order;
 	}
-	
+
 	public Cart getCart() {
 		return cart;
 	}
 
 	public void setPhone(String phone) {
-		if (phone != null && !phone.isEmpty()) {
+		if (isValidPhone(phone)) {
 			this.phone = phone;
 		}
 	}
@@ -84,7 +97,7 @@ public class User {
 	}
 
 	public void setPassword(String password) {
-		if (password != null && !password.isEmpty()) {
+		if (isValidPassword(password)) {
 			this.password = password;
 		}
 	}
@@ -118,6 +131,18 @@ public class User {
 				setPassword(newPassword);
 			}
 		}
+	}
+
+	public boolean isValidPhone(String phone) {
+		String pattern = "^08[7-9][0-9]{7}$";
+		if (phone.matches(pattern)) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isValidPassword(String password) {
+		return password != null && !password.isEmpty() && password.length() >= MIN_PASSWORD_LENGTH;
 	}
 
 	// public void viewProfile() {
