@@ -81,7 +81,7 @@ public class Shop {
 
 	public void registrate() {
 		Scanner sc = new Scanner(System.in);
-
+		
 		System.out.println("Input your full name: ");
 		String name = sc.nextLine();
 		System.out.println("Input your phone: ");
@@ -91,10 +91,16 @@ public class Shop {
 
 		System.out.println("Username: ");
 		String username = sc.next();
-		System.out.println("Password: ");
+		System.out.println("Password(must be more than 5 symbols): ");
 		String password = sc.next();
 
 		User user = new User(username, password);
+		while(!user.isValidPassword(password)) {
+			System.out.println("Password(must be more than 5 symbols): ");
+			password = sc.next();
+		}		
+		user.setPassword(password);
+		
 		if (!this.users.contains(user)) {
 			user.setAge(age);
 			user.setName(name);

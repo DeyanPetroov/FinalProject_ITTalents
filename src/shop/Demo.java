@@ -19,7 +19,6 @@ public class Demo {
         shop.registrate();
         shop.logIn();
         User user = shop.getUsers().get(0);
-        Product p = new Product(Product.Category.COMPUTERS, 40);
         Administrator admin = new Administrator();
         admin.addProduct();
        
