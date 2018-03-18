@@ -20,7 +20,7 @@ public class Demo {
         shop.logIn();
         User user = shop.getUsers().get(0);
         Administrator admin = new Administrator();
-        admin.addProduct();
+        admin.addProduct(new Computer(Product.Category.COMPUTERS, 200));
        
         //shte tyrsi izbran ot User-a produkt v magazina i shte go dobavq v kolichkata
         user.addToCart((Product) shop.getProducts().keySet().toArray()[0], 3);

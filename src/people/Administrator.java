@@ -44,16 +44,12 @@ public class Administrator {
 //		return true;
 //	}
 	
-	public void addProduct() {
+	public void addProduct(Product p) {
 		// shte sa skriti na stranicata AKO !isAdmin()
 		// Product shte byde abstract
 		// nishto nqma da e random, taka sa za Demoto
-		Product p = new Product(Product.getRandomCategory(), Demo.random(10, 100));
-		if (Shop.getInstance().getProducts().containsKey(p)) {
-			Shop.getInstance().getProducts().put(p, Shop.getInstance().getProducts().get(p) + Demo.random(1, 100));
-		} else {
-			Shop.getInstance().getProducts().put(p, Demo.random(1, 100));
-		}
+		p.addProduct(Demo.random(10, 100));
+		
 	}
 
 	public void removeProduct(Product p) {

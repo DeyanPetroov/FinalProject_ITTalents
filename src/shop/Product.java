@@ -1,6 +1,8 @@
 package shop;
 
-public class Product {
+import java.util.Scanner;
+
+public abstract class Product {
 
 	public enum Category {
 		PHONES, COMPUTERS, TV, PHOTO
@@ -21,6 +23,8 @@ public class Product {
 		this.category = category;
 	}
 
+	public abstract void addProduct(int quantity);
+	
 	public void setModel(String model) {
 		if (model != null && !model.isEmpty()) {
 			this.model = model;
@@ -32,10 +36,14 @@ public class Product {
 			this.brand = brand;
 		}
 	}
-
-	//now is null because of brand and model ---> should be fixed
+	
 	public void setName() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Admin must enter brand and model: ");
+		this.brand=sc.nextLine();
+		this.model=sc.nextLine();
 		this.name = this.brand + this.model;
+		sc.close();
 	}
 
 	public double getPrice() {
