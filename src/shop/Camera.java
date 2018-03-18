@@ -2,19 +2,17 @@ package shop;
 
 public class Camera extends Product {
 
-	public Camera(Category category, double price) {
-		super(category, price);
+	public Camera(double price) {
+		super(Category.PHOTO, price);
 	}
 
 	@Override
 	public void addProduct(int quantity) {
-		Product p = new Camera(Product.Category.PHOTO, quantity);
+		Product p = new Camera(quantity);
 		if (Shop.getInstance().getProducts().containsKey(p)) {
 			Shop.getInstance().getProducts().put(p, Shop.getInstance().getProducts().get(p) + quantity);
 		} else {
 			Shop.getInstance().getProducts().put(p, quantity);
 		}
-
 	}
-
 }
