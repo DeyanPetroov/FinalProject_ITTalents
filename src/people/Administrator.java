@@ -4,7 +4,11 @@ import shop.Demo;
 import shop.Product;
 import shop.Shop;
 
-public class Administrator {
+public class Administrator extends User {
+
+	public Administrator(String username, String password) {
+		super(username, password);	
+	}
 
 	private String nickname;
 	private String password;
