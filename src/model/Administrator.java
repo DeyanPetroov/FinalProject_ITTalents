@@ -1,4 +1,4 @@
-package people;
+package model;
 
 import shop.Demo;
 import shop.Product;
@@ -6,13 +6,14 @@ import shop.Shop;
 
 public class Administrator extends User {
 
-	public Administrator(String username, String password) {
-		super(username, password);	
-	}
-
 	private String nickname;
 	private String password;
 	private String username;
+
+	public Administrator(String nickname, String username, String password, String email, int age) {
+		super(nickname, null, username, password, email, age);	
+	}
+
 
 	public void setNickname(String nickname) {
 		if (nickname != null && !nickname.isEmpty()) {

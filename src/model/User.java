@@ -1,4 +1,4 @@
-package people;
+package model;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -13,21 +13,33 @@ public class User {
 
 	private static final int MIN_PASSWORD_LENGTH = 5;
 
-	private String name;
-	private int age;
-	private String phone;
+	private int id;
+	private String first_name;
+	private String last_name;	
 	private String username;
 	private String password;
+	private String email;
+	private String phone;
+	private int age;
 	private Cart cart = new Cart();
 	private boolean logged;
 	private Order order = new Order();
 	private ArrayList<Order> orders = new ArrayList<>();
-
-	public User(String username, String password) {
+	
+	public User(int id, String firstName, String lastName, String username, String password, String email, int age) {		
+		this(firstName, lastName, username, password, email, age);
+		this.id = id;
+	}
+	
+	public User(String firstName, String lastName, String username, String password, String email, int age) {
 		setUsername(username);
 		setPassword(password);
 		this.logged = false;
 		cart.setUser(this);
+		this.first_name = firstName;
+		this.last_name = lastName;
+		this.email=email;
+		this.age = age;
 	}
 
 	public void order() {
@@ -68,6 +80,16 @@ public class User {
 		return cart;
 	}
 
+	public void setEmail(String email) {
+		if(email!=null && !email.isEmpty()) {
+			this.email = email;
+		}
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+	
 	public void setPhone(String phone) {
 		if (isValidPhone(phone)) {
 			this.phone = phone;
@@ -84,9 +106,12 @@ public class User {
 		this.logged = logged;
 	}
 
-	public void setName(String name) {
-		if (name != null && !name.isEmpty()) {
-			this.name = name;
+	public void setName(String first_name, String last_name) {
+		if (first_name != null && !first_name.isEmpty()) {
+			this.first_name = first_name;
+		}
+		if (last_name != null && !last_name.isEmpty()) {
+			this.last_name = last_name;
 		}
 	}
 
@@ -143,6 +168,18 @@ public class User {
 
 	public boolean isValidPassword(String password) {
 		return password != null && !password.isEmpty() && password.length() >= MIN_PASSWORD_LENGTH;
+	}
+
+	public String getFirstName() {
+		return first_name;
+	}
+	
+	public String getLastName() {
+		return last_name;
+	}
+
+	public int getAge() {
+		return age;
 	}
 
 	// public void viewProfile() {

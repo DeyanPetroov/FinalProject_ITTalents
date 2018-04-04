@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
-import people.User;
+import model.User;
 
 public class Cart {
 

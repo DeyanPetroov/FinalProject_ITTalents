@@ -3,10 +3,11 @@ package shop;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map.Entry;
+
+import model.User;
+
 import java.util.Scanner;
 import java.util.TreeMap;
-
-import people.User;
 
 public class Shop {
 
@@ -79,13 +80,14 @@ public class Shop {
 		user.setLogged(false);
 	}
 
-	public void registrate() {
+	public void register() {
 		Scanner sc = new Scanner(System.in);
 		
 		System.out.println("Input your full name: ");
-		String name = sc.nextLine();
-		System.out.println("Input your phone: ");
-		String phone = sc.nextLine();
+		String first_name = sc.nextLine();
+		String last_name = sc.nextLine();
+		System.out.println("Input your email: ");
+		String email = sc.nextLine();
 		System.out.println("Input your age: ");
 		int age = sc.nextInt();
 
@@ -94,7 +96,7 @@ public class Shop {
 		System.out.println("Password(must be more than 5 symbols): ");
 		String password = sc.next();
 
-		User user = new User(username, password);
+		User user = new User(first_name, last_name, username, password, email, age);
 		while(!user.isValidPassword(password)) {
 			System.out.println("Password(must be more than 5 symbols): ");
 			password = sc.next();
@@ -103,8 +105,8 @@ public class Shop {
 		
 		if (!this.users.contains(user)) {
 			user.setAge(age);
-			user.setName(name);
-			user.setPhone(phone);
+			user.setName(first_name, last_name);
+			user.setEmail(email);
 			this.users.add(user);
 		} 
 		else {

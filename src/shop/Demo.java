@@ -2,8 +2,8 @@ package shop;
 
 import java.util.Random;
 
-import people.Administrator;
-import people.User;
+import model.Administrator;
+import model.User;
 
 public class Demo {
 
@@ -16,10 +16,10 @@ public class Demo {
 
 		Shop shop = Shop.getInstance("Emag");
 			       
-        shop.registrate();
+        shop.register();
         shop.logIn();
         User user = shop.getUsers().get(0);
-        Administrator admin = new Administrator("admin", "admin");
+        Administrator admin = new Administrator("God", "admin", "admin", "admin@emag.bg", 30);
         admin.addProduct(new Computer(200));
        
         //shte tyrsi izbran ot User-a produkt v magazina i shte go dobavq v kolichkata
