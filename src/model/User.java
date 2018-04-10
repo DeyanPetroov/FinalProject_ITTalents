@@ -3,9 +3,6 @@ package model;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.TreeMap;
-
-import org.omg.PortableServer.ServantLocatorPOA;
 
 import shop.Cart;
 import shop.Order;
