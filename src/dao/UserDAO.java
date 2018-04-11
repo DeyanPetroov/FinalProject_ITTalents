@@ -6,13 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import model.User;
 
 public class UserDAO implements IUserDAO {
 	
-	private static final String INSERT_USER = "INSERT INTO users (first_name, last_name, email, age) VALUES (?,?,?,?)";
+	private static final String INSERT_USER = "INSERT INTO users (first_name, last_name, username, password, email, age) VALUES (?,?,?,?,?,?)";
 	private static final String GET_USER_BY_ID = "SELECT * FROM users WHERE id = ?";
 	private static final String GET_ALL_USERS = "SELECT id, first_name, last_name, username, password, email, age FROM users";
 	private static final String UPDATE_USER = "UPDATE users SET first_name = ?, last_name = ?, email = ?, age = ?, WHERE id = ?";
@@ -22,6 +23,7 @@ public class UserDAO implements IUserDAO {
 	
 	private static UserDAO instance;
 	private Connection connection;
+	private static final HashMap<String, User> allUsers = new HashMap<>();
 	
 	public static synchronized UserDAO getInstance() {
 		if(instance == null) {
@@ -57,8 +59,10 @@ public class UserDAO implements IUserDAO {
 		try (PreparedStatement s = connection.prepareStatement(INSERT_USER);) {
 			s.setString(1, u.getFirstName());
 			s.setString(2, u.getLastName());
-			s.setString(3, u.getEmail());
-			s.setInt(4, u.getAge());
+			s.setString(3, u.getUsername());
+			s.setString(4, u.getPassword());
+			s.setString(5, u.getEmail());
+			s.setInt(6, u.getAge());
 			s.executeUpdate();
 		} catch (SQLException e) {
 			e.getMessage();
@@ -80,8 +84,8 @@ public class UserDAO implements IUserDAO {
 	}
 
 	@Override
-	public Collection<User> getAllUsers() {
-		HashSet<User> users = new HashSet<>();
+	public HashMap<String, User> getAllUsers() {
+		
 		ResultSet result = null;
 
 		try (PreparedStatement selectAllUsers = connection.prepareStatement(GET_ALL_USERS);) {
@@ -95,12 +99,12 @@ public class UserDAO implements IUserDAO {
 						result.getString("password"),
 						result.getString("email"),
 						result.getInt("age"));
-				users.add(u);
+				allUsers.put(u.getUsername(), u);
 			}
 		} catch (SQLException e) {
 			e.getMessage();
 		}
-		return users;
+		return allUsers;
 	}
 
 	@Override

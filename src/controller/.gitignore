@@ -2,3 +2,6 @@
 /ProductController.class
 /OrderController.class
 /UserManager.class
+/LoginServlet.class
+/LogoutServlet.class
+/RegisterServlet.class

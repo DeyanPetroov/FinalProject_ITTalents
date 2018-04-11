@@ -1,5 +1,6 @@
 package dao;
 import java.util.Collection;
+import java.util.HashMap;
 
 import model.User;
 
@@ -11,5 +12,5 @@ public interface IUserDAO {
 	void changePassword(User u, String password) throws Exception;
 	void deleteUserById(long id) throws Exception;
 	boolean passwordAndUsernameValidation(String username, String password) throws Exception;
-	Collection<User> getAllUsers() throws Exception;
+	HashMap<String, User> getAllUsers() throws Exception;
 }
