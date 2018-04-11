@@ -87,22 +87,23 @@ public class UserDAO implements IUserDAO {
 	public HashMap<String, User> getAllUsers() {
 		
 		ResultSet result = null;
-
-		try (PreparedStatement selectAllUsers = connection.prepareStatement(GET_ALL_USERS);) {
-			result = selectAllUsers.executeQuery();
-			while (result.next()) {
-				User u = new User(
-						result.getInt("id"), 
-						result.getString("first_name"), 
-						result.getString("last_name"),
-						result.getString("username"),
-						result.getString("password"),
-						result.getString("email"),
-						result.getInt("age"));
-				allUsers.put(u.getUsername(), u);
+		if(allUsers.isEmpty()){
+			try (PreparedStatement selectAllUsers = connection.prepareStatement(GET_ALL_USERS);) {
+				result = selectAllUsers.executeQuery();
+				while (result.next()) {
+					User u = new User(
+							result.getInt("id"), 
+							result.getString("first_name"), 
+							result.getString("last_name"),
+							result.getString("username"),
+							result.getString("password"),
+							result.getString("email"),
+							result.getInt("age"));
+					allUsers.put(u.getUsername(), u);
+				}
+			} catch (SQLException e) {
+				e.getMessage();
 			}
-		} catch (SQLException e) {
-			e.getMessage();
 		}
 		return allUsers;
 	}
