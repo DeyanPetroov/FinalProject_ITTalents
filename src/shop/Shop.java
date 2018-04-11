@@ -97,11 +97,11 @@ public class Shop {
 		String password = sc.next();
 
 		User user = new User(first_name, last_name, username, password, email, age);
-		while(!user.isValidPassword(password)) {
+		
+		while(!user.setPassword(password)) {
 			System.out.println("Password(must be more than 5 symbols): ");
 			password = sc.next();
 		}		
-		user.setPassword(password);
 		
 		if (!this.users.contains(user)) {
 			user.setAge(age);

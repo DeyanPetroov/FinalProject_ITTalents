@@ -3,7 +3,6 @@ package model;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.TreeMap;
 
 import shop.Cart;
 import shop.Order;
@@ -12,8 +11,13 @@ import shop.Product;
 public class User {
 
 	private static final int MIN_PASSWORD_LENGTH = 5;
-
-	private int id;
+	private static final String PHONE_PATTERN = "^08[7-9][0-9]{7}$"; 
+	private static final String USERNAME_PATTERN = "^[a-z0-9_-]{3,15}$";
+	private static final String NAME_PATTERN = "^[a-zA-Z '.-]{3,31}$";
+	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+											  + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	
+	private long id;
 	private String first_name;
 	private String last_name;	
 	private String username;
@@ -21,10 +25,11 @@ public class User {
 	private String email;
 	private String phone;
 	private int age;
-	private Cart cart = new Cart();
+	
 	private boolean logged;
+	private Cart cart = new Cart();
 	private Order order = new Order();
-	private ArrayList<Order> orders = new ArrayList<>();
+	private ArrayList<Order> orderHistory = new ArrayList<>();
 	
 	public User(int id, String firstName, String lastName, String username, String password, String email, int age) {		
 		this(firstName, lastName, username, password, email, age);
@@ -32,37 +37,21 @@ public class User {
 	}
 	
 	public User(String firstName, String lastName, String username, String password, String email, int age) {
+		setFirstName(firstName);
+		setLastName(lastName);
 		setUsername(username);
 		setPassword(password);
+		setEmail(email);
+		setAge(age);
 		this.logged = false;
 		cart.setUser(this);
-		this.first_name = firstName;
-		this.last_name = lastName;
-		this.email=email;
-		this.age = age;
-	}
-
-	public void order() {
-		String answer = null;
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Do you want to finalize the order?");
-		answer = sc.next();
-		sc.close();
-
-		switch (answer) {
-		case "yes":
-			// move products from cart to order
-			Map<Product, Integer> products = cart.getProducts();
-			order.setProducts(products);
-			// remove all products from cart
-			cart.emptyCart();
-			orders.add(order);
-		}
 	}
 
 	// public boolean isAdmin() {
 	// return false;
 	// }
+	
+	//----------GETTERS-----------
 
 	public String getPassword() {
 		return password;
@@ -80,19 +69,53 @@ public class User {
 		return cart;
 	}
 
-	public void setEmail(String email) {
-		if(email!=null && !email.isEmpty()) {
-			this.email = email;
-		}
-	}
-	
 	public String getEmail() {
 		return email;
 	}
 	
+	public String getFirstName() {
+		return first_name;
+	}
+	
+	public String getLastName() {
+		return last_name;
+	}
+
+	public int getAge() {
+		return age;
+	}
+	
+	public String getPhone() {
+		return phone;
+	}
+	
+	public long getId() {
+		return id;
+	}
+	
+	//-----------SETTERS-----------
+	
+	public void setFirstName(String first_name) {
+		if (first_name.matches(NAME_PATTERN) && !first_name.isEmpty()) {
+			this.first_name = first_name;
+		}
+	}
+
+	public void setLastName(String last_name) {
+		if (last_name.matches(NAME_PATTERN) && !last_name.isEmpty()) {
+			this.last_name = last_name;
+		}
+	}
+	
 	public void setPhone(String phone) {
-		if (isValidPhone(phone)) {
+		if (phone.matches(PHONE_PATTERN)) {
 			this.phone = phone;
+		}
+	}
+	
+	public void setEmail(String email) {
+		if(email.matches(EMAIL_PATTERN) && !email.isEmpty()) {
+			this.email = email;
 		}
 	}
 
@@ -102,30 +125,30 @@ public class User {
 		}
 	}
 
+	public void setUsername(String username) {
+		if (username.matches(USERNAME_PATTERN) && !username.isEmpty()) {
+			this.username = username;
+		}
+	}
+	
+	public boolean setPassword(String password) {
+		if(password != null && !password.isEmpty() && password.length() >= MIN_PASSWORD_LENGTH) {
+			this.password = password;
+			return true;
+		}
+		return false;
+	}
+	
 	public void setLogged(boolean logged) {
 		this.logged = logged;
 	}
 
 	public void setName(String first_name, String last_name) {
-		if (first_name != null && !first_name.isEmpty()) {
-			this.first_name = first_name;
-		}
-		if (last_name != null && !last_name.isEmpty()) {
-			this.last_name = last_name;
-		}
+		setFirstName(first_name);
+		setLastName(last_name);
 	}
 
-	public void setUsername(String username) {
-		if (username != null && !username.isEmpty()) {
-			this.username = username;
-		}
-	}
-
-	public void setPassword(String password) {
-		if (isValidPassword(password)) {
-			this.password = password;
-		}
-	}
+	//-------------METHODS-----------
 
 	public void addToCart(Product product, int quantity) {
 		if (this.logged == true) {
@@ -157,29 +180,23 @@ public class User {
 			}
 		}
 	}
-
-	public boolean isValidPhone(String phone) {
-		String pattern = "^08[7-9][0-9]{7}$";
-		if (phone.matches(pattern)) {
-			return true;
-		}
-		return false;
-	}
-
-	public boolean isValidPassword(String password) {
-		return password != null && !password.isEmpty() && password.length() >= MIN_PASSWORD_LENGTH;
-	}
-
-	public String getFirstName() {
-		return first_name;
-	}
 	
-	public String getLastName() {
-		return last_name;
-	}
+	public void order() {
+		String answer = null;
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Do you want to finalize the order?");
+		answer = sc.next();
+		sc.close();
 
-	public int getAge() {
-		return age;
+		switch (answer) {
+		case "yes":
+			// move products from cart to order
+			Map<Product, Integer> products = cart.getProducts();
+			order.setProducts(products);
+			// remove all products from cart
+			cart.emptyCart();
+			orderHistory.add(order);
+		}
 	}
 
 	// public void viewProfile() {

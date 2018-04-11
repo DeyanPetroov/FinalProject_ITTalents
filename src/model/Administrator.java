@@ -7,42 +7,15 @@ import shop.Shop;
 public class Administrator extends User {
 
 	private String nickname;
-	private String password;
-	private String username;
 
 	public Administrator(String nickname, String username, String password, String email, int age) {
 		super(nickname, null, username, password, email, age);	
 	}
 
-
 	public void setNickname(String nickname) {
 		if (nickname != null && !nickname.isEmpty()) {
 			this.nickname = nickname;
 		}
-	}
-
-	public void setPassword(String password) {
-		if (password != null && !password.isEmpty()) {
-			this.password = password;
-		}
-	}
-	
-	public void setUsername(String username) {
-		if (username != null && !username.isEmpty()) {
-			this.username = username;
-		}
-	}
-	
-	public String getNickname() {
-		return nickname;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public String getUsername() {
-		return username;
 	}
 
 //	boolean isAdmin() {
