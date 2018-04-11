@@ -17,7 +17,7 @@ public class User {
 	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 											  + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	
-	private long id;
+	private long user_id;
 	private String first_name;
 	private String last_name;	
 	private String username;
@@ -28,17 +28,17 @@ public class User {
 	
 	private boolean logged;
 	private Cart cart = new Cart();
-	private Order order = new Order();
+	private Order order;
 	private ArrayList<Order> orderHistory = new ArrayList<>();
 	
-	public User(int id, String firstName, String lastName, String username, String password, String email, int age) {		
-		this(firstName, lastName, username, password, email, age);
-		this.id = id;
+	public User(long id, String username, String password, String first_name, String last_name, String phone, int age) {		
+		this(username, password, first_name, last_name, phone, age);
+		this.user_id = id;
 	}
 	
-	public User(String firstName, String lastName, String username, String password, String email, int age) {
-		setFirstName(firstName);
-		setLastName(lastName);
+	public User(String username, String password, String first_name, String last_name, String phone, int age) {
+		setFirstName(first_name);
+		setLastName(last_name);
 		setUsername(username);
 		setPassword(password);
 		setEmail(email);
@@ -90,7 +90,7 @@ public class User {
 	}
 	
 	public long getId() {
-		return id;
+		return user_id;
 	}
 	
 	//-----------SETTERS-----------
@@ -190,6 +190,7 @@ public class User {
 
 		switch (answer) {
 		case "yes":
+			this.order = new Order(this);
 			// move products from cart to order
 			Map<Product, Integer> products = cart.getProducts();
 			order.setProducts(products);
