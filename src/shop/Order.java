@@ -26,12 +26,16 @@ public class Order {
 		this.products = new TreeMap<Product, Integer>();
 	}
 
-	public void getStatus() {			
-			switch(status) {
-			case -1: System.out.println("No order present."); break;
-			case 0: System.out.println("Your order is awaiting confirmation"); break;
-			case 1: System.out.println("Your order has been confirmed and has been shipped."); break;
-			}			
+	public String getStatus() {
+		switch (status) {
+		case -1:
+			return "No order present.";
+		case 0:
+			return "Your order is awaiting confirmation";
+		case 1:
+			return "Your order has been confirmed and has been shipped.";
+		}
+		return null;
 	}
 
 	public LocalDate getDate() {
@@ -42,7 +46,6 @@ public class Order {
 		return user;
 	}
 	
-
 	public double getTotalCost() {
 		return this.totalCost;
 	}
