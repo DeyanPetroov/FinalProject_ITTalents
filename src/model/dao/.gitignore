@@ -3,3 +3,5 @@
 /IUserDAO.class
 /ProductDAO.class
 /UserDAO.class
+/IOrderDAO.class
+/OrderDAO.class

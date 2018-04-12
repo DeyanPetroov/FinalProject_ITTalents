@@ -1,8 +1,10 @@
 package model.dao;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 import model.User;
+import shop.Order;
 
 public interface IUserDAO {
 
@@ -11,6 +13,7 @@ public interface IUserDAO {
 	void updateUser(User u) throws Exception;
 	void changePassword(User u, String password) throws Exception;
 	void deleteUserById(long id) throws Exception;
+	List<Order> getAllUserOrders(int user_id) throws Exception;	
 	boolean passwordAndUsernameValidation(String username, String password) throws Exception;
 	HashMap<String, User> getAllUsers() throws Exception;
 }

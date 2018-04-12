@@ -15,7 +15,6 @@ public class OrderDAO implements IOrderDAO {
 	
 	private static final String UPDATE_ORDER_STATUS_FOR_USER = "UPDATE orders SET status_id = ? WHERE user_id = ?";
 	private static final String DELETE_ORDER_BY_ID = "DELETE FROM orders WHERE order_id = ?";
-	private static final String GET_ORDERS_FOR_USER = "SELECT date, total_cost, status_id FROM orders WHERE user_id = ?";
 	private static final String NEW_ORDER = "INSERT INTO orders (user_id, date, total_cost, status_id) VALUES (?,?,?,?)"; 
 	private static final String GET_ORDER_BY_ID = 
 			"SELECT o.order_id, CONCAT(u.first_name, ' ', u.last_name) AS Name, o.date, o.total_cost, s.status_description" + 
@@ -69,23 +68,6 @@ public class OrderDAO implements IOrderDAO {
 		}
 		
 		return order;
-	}
-
-	@Override
-	public List<Order> getAllUserOrders(int user_id) throws Exception {
-		List<Order> userOrders = new ArrayList<>();
-		try(PreparedStatement getOrders = connection.prepareStatement(GET_ORDERS_FOR_USER);){
-			getOrders.setInt(1, user_id);
-			ResultSet result = getOrders.executeQuery();
-			while(result.next()) {
-				Order order = new Order();
-				userOrders.add(order);
-			}
-		}
-		catch(SQLException e) {
-			e.getMessage();
-		}
-		return userOrders;	
 	}
 
 	@Override

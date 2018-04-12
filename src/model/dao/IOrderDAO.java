@@ -11,5 +11,5 @@ public interface IOrderDAO {
 	void removeOrder(int order_id) throws Exception;
 	Order getOrderById(long id) throws Exception;
 	void updateOrderStatus(User user, int status_id) throws Exception;
-	List<Order> getAllUserOrders(int user_id) throws Exception;	
+	
 }

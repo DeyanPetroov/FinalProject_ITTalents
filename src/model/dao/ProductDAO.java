@@ -13,7 +13,7 @@ public class ProductDAO implements IProductDAO {
 	
 	private static final String INSERT_PRODUCT = "INSERT INTO products VALUES (?, ?, ?, ?, ?, ?)";
 	private static final String GET_PRODUCT_BY_ID = 
-			"SELECT p.product_id, p.brand, p.model, p.description, p.price, c.category_description FROM products AS p" + 
+			"SELECT p.product_id, p.brand, p.model, p.description, p.price, c.category_name FROM products AS p" + 
 			"JOIN categories AS c" + 
 			"ON p.product_id = ? AND p.category_id = c.category_id";
 	private static final String UPDATE_PRODUCT = "UPDATE products SET brand = ?, model = ?, description = ?, price = ?, category_id = ?";
@@ -82,7 +82,7 @@ public class ProductDAO implements IProductDAO {
 			p.setInt(1, product_id);
 			ResultSet resultSet = p.executeQuery();
 			while(resultSet.next()) {
-				product = new Product(Product.Category.valueOf(resultSet.getString("category_description")), resultSet.getDouble("price"));
+				product = new Product(Product.Category.valueOf(resultSet.getString("category_name")), resultSet.getDouble("price"));
 			}
 		}
 		catch(SQLException e) {
@@ -98,7 +98,7 @@ public class ProductDAO implements IProductDAO {
 			p.setInt(1, category_id);
 			ResultSet result = p.executeQuery();
 			while(result.next()) {
-				Product product = new Product((Product.Category.valueOf(result.getString("category_description"))), result.getDouble("price"));
+				Product product = new Product((Product.Category.valueOf(result.getString("category_name"))), result.getDouble("price"));
 				sameCategoryProducts.add(product);
 			}
 		}

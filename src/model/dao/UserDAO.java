@@ -5,11 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import model.User;
+import shop.Order;
 
 public class UserDAO implements IUserDAO {
 	
@@ -20,6 +23,7 @@ public class UserDAO implements IUserDAO {
 	private static final String DELETE_USER_BY_ID = "DELETE from users WHERE user_id = ?";
 	private static final String CHANGE_PASSWORD = "UPDATE users SET password = ? WHERE user_id = ?";
 	private static final String SEARCH_USER = "SELECT COUNT(*) FROM users WHERE username = ? AND password = ?";
+	private static final String GET_ORDERS_FOR_USER = "SELECT date, total_cost, status_id FROM orders WHERE user_id = ?";
 	
 	private static UserDAO instance;
 	private Connection connection;
@@ -81,6 +85,23 @@ public class UserDAO implements IUserDAO {
 		update.executeUpdate();
 	}
 
+	@Override
+	public List<Order> getAllUserOrders(int user_id) throws Exception {
+		List<Order> userOrders = new ArrayList<>();
+		try(PreparedStatement getOrders = connection.prepareStatement(GET_ORDERS_FOR_USER);){
+			getOrders.setInt(1, user_id);
+			ResultSet result = getOrders.executeQuery();
+			while(result.next()) {
+				Order order = new Order();
+				userOrders.add(order);
+			}
+		}
+		catch(SQLException e) {
+			e.getMessage();
+		}
+		return userOrders;	
+	}
+	
 	@Override
 	public HashMap<String, User> getAllUsers() {
 		
