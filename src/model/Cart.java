@@ -1,10 +1,8 @@
-package shop;
+package model;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
-
-import model.User;
 
 public class Cart {
 

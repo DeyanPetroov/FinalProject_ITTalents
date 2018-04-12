@@ -1,9 +1,6 @@
 package model;
 
 import model.dao.ProductDAO;
-import shop.Demo;
-import shop.Product;
-import shop.Shop;
 
 public class Administrator extends User {
 

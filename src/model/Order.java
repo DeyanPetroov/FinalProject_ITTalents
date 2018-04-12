@@ -1,4 +1,4 @@
-package shop;
+package model;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -7,8 +7,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
-
-import model.User;
 
 public class Order {
 

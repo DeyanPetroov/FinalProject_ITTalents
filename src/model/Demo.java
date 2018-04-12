@@ -1,9 +1,6 @@
-package shop;
+package model;
 
 import java.util.Random;
-
-import model.Administrator;
-import model.User;
 
 public class Demo {
 

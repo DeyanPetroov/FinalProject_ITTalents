@@ -1,11 +1,8 @@
-package shop;
+package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map.Entry;
-
-import model.User;
-
 import java.util.Scanner;
 import java.util.TreeMap;
 

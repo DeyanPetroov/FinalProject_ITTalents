@@ -1,12 +1,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
-
-import shop.Cart;
-import shop.Order;
-import shop.Product;
 
 public class User {
 
@@ -30,6 +27,7 @@ public class User {
 	private Cart cart = new Cart();
 	private Order order;
 	private ArrayList<Order> orderHistory = new ArrayList<>();
+	private HashSet<Product> favouriteProducts = new HashSet<>();
 	
 	public User(long id, String username, String password, String first_name, String last_name, String phone, int age) {		
 		this(username, password, first_name, last_name, phone, age);

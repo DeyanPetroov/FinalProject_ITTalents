@@ -1,4 +1,4 @@
-package shop;
+package model;
 
 import java.util.Scanner;
 
