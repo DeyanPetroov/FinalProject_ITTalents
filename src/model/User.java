@@ -190,7 +190,7 @@ public class User {
 
 		switch (answer) {
 		case "yes":
-			this.order = new Order(this);
+			this.order = new Order();
 			// move products from cart to order
 			Map<Product, Integer> products = cart.getProducts();
 			order.setProducts(products);

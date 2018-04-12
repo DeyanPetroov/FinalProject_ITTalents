@@ -90,8 +90,8 @@ public class ProductDAO implements IProductDAO {
 			ResultSet result = p.executeQuery();
 			while(result.next()) {
 				//TODO get category
-//				Product product = new Product(, result.getDouble("price"));
-//				sameCategoryProducts.add(product);
+				Product product = new Product((Product.Category.valueOf(result.getString("category_name"))), result.getDouble("price"));
+				sameCategoryProducts.add(product);
 			}
 		}
 		catch(SQLException e) {

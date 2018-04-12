@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.UserDAO;
+import model.dao.UserDAO;
 import model.User;
 
 @WebServlet("/LoginServlet")
@@ -30,10 +30,10 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("user", u);
 			session.setMaxInactiveInterval(3000);
 			session.setAttribute("logged", true);
-			resp.sendRedirect("profile.jsp");
+			resp.sendRedirect("profile.jsp"); //TODO: create profile.jsp
 		}
 		else{
-			resp.sendRedirect("errorLogin.html");
+			resp.sendRedirect("errorLogin.html"); //TODO: create such a page
 		}
 	}
 

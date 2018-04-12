@@ -2,7 +2,7 @@ package shop;
 
 import java.util.Scanner;
 
-public abstract class Product {
+public class Product {
 	
 	private static int UNIQUE_ID = 1;
 
@@ -37,7 +37,7 @@ public abstract class Product {
 		this.product_id = UNIQUE_ID++;
 	}
 
-	public abstract void addProduct(int quantity);
+	//public abstract void addProduct(int quantity);
 	
 	//==============SETTERS===================
 	

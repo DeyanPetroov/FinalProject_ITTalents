@@ -20,7 +20,7 @@ public class Demo {
         shop.logIn();
         User user = shop.getUsers().get(0);
         Administrator admin = new Administrator("God", "admin", "admin", "admin@emag.bg", 30);
-        admin.addProduct(new Computer(200));
+        //admin.addProduct(new Computer(200));
        
         //shte tyrsi izbran ot User-a produkt v magazina i shte go dobavq v kolichkata
         user.addToCart((Product) shop.getProducts().keySet().toArray()[0], 3);

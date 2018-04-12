@@ -1,5 +1,6 @@
 package model;
 
+import model.dao.ProductDAO;
 import shop.Demo;
 import shop.Product;
 import shop.Shop;
@@ -22,12 +23,8 @@ public class Administrator extends User {
 //		return true;
 //	}
 	
-	public void addProduct(Product p) {
-		// shte sa skriti na stranicata AKO !isAdmin()
-		// Product shte byde abstract
-		// nishto nqma da e random, taka sa za Demoto
-		p.addProduct(Demo.random(10, 100));
-		
+	public void addProduct(Product p) throws Exception {
+		ProductDAO.getInstance().addProduct(p);		
 	}
 
 	public void removeProduct(Product p) {

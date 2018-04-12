@@ -8,10 +8,13 @@ import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
+import model.User;
+
 public class Order {
 
 	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	private LocalDate date;
+	private User user;
 	private double totalCost;
 	private int status = -1;	
 	private Map<Product, Integer> products;
@@ -34,6 +37,11 @@ public class Order {
 	public LocalDate getDate() {
 		return date;
 	}	
+	
+	public User getUser() {
+		return user;
+	}
+	
 
 	public double getTotalCost() {
 		return this.totalCost;
