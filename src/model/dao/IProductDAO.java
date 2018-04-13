@@ -2,7 +2,7 @@ package model.dao;
 
 import java.util.List;
 
-import shop.Product;
+import model.Product;
 
 public interface IProductDAO {
 	

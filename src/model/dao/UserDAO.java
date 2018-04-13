@@ -10,16 +10,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-
-import model.User;
-import shop.Order;
+import model.*;
 
 public class UserDAO implements IUserDAO {
 	
-	private static final String INSERT_USER = "INSERT INTO users (user_id, username, password, first_name, last_name, phone, age) VALUES (?,?,?,?,?,?,?)";
-	private static final String GET_USER_BY_ID = "SELECT user_id, username, password, first_name, last_name, phone, age FROM users WHERE user_id = ?";
-	private static final String GET_ALL_USERS = "SELECT user_id, username, password, first_name, last_name, phone, age FROM users";
-	private static final String UPDATE_USER = "UPDATE users SET first_name = ?, last_name = ?, phone = ?, age = ?, WHERE id = ?";
+	private static final String INSERT_USER = "INSERT INTO users (username, password, first_name, last_name, email, age) VALUES (?,?,?,?,?,?)";
+	private static final String GET_USER_BY_ID = "SELECT user_id, username, password, first_name, last_name, email, age FROM users WHERE user_id = ?";
+	private static final String GET_ALL_USERS = "SELECT user_id, username, password, first_name, last_name, email, age FROM users";
+	private static final String UPDATE_USER = "UPDATE users SET first_name = ?, last_name = ?, email = ?, age = ?, WHERE id = ?";
 	private static final String DELETE_USER_BY_ID = "DELETE from users WHERE user_id = ?";
 	private static final String CHANGE_PASSWORD = "UPDATE users SET password = ? WHERE user_id = ?";
 	private static final String SEARCH_USER = "SELECT COUNT(*) FROM users WHERE username = ? AND password = ?";
@@ -61,12 +59,11 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public void saveUser(User u) {
 		try (PreparedStatement s = connection.prepareStatement(INSERT_USER);) {
-			s.setString(1, null);
 			s.setString(1, u.getUsername());
 			s.setString(2, u.getPassword());
 			s.setString(3, u.getFirstName());
 			s.setString(4, u.getFirstName());
-			s.setString(5, u.getPhone());
+			s.setString(5, u.getEmail());
 			s.setInt(6, u.getAge());
 			s.executeUpdate();
 		} catch (SQLException e) {
@@ -79,7 +76,7 @@ public class UserDAO implements IUserDAO {
 		PreparedStatement update = connection.prepareStatement(UPDATE_USER);
 		update.setString(1, u.getFirstName());
 		update.setString(2, u.getLastName());
-		update.setString(3, u.getPhone());
+		update.setString(3, u.getEmail());
 		update.setInt(4, u.getAge());
 		update.setLong(5, u.getId());
 		update.executeUpdate();
@@ -116,7 +113,7 @@ public class UserDAO implements IUserDAO {
 							result.getString("password"),
 							result.getString("first_name"),
 							result.getString("last_name"),
-							result.getString("phone"),
+							result.getString("email"),
 							result.getInt("age"));
 					allUsers.put(u.getUsername(), u);
 				}

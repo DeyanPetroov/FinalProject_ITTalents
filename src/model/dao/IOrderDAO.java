@@ -3,7 +3,7 @@ package model.dao;
 import java.util.List;
 
 import model.User;
-import shop.Order;
+import model.*;
 
 public interface IOrderDAO {
 	

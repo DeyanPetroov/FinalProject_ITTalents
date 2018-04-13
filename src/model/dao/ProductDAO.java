@@ -6,12 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import shop.Product;
+import model.*;
 
 public class ProductDAO implements IProductDAO {
 	
-	private static final String INSERT_PRODUCT = "INSERT INTO products VALUES (?, ?, ?, ?, ?, ?)";
+	private static final String INSERT_PRODUCT = "INSERT INTO products VALUES (?, ?, ?, ?, ?)";
 	private static final String GET_PRODUCT_BY_ID = 
 			"SELECT p.product_id, p.brand, p.model, p.description, p.price, c.category_name FROM products AS p" + 
 			"JOIN categories AS c" + 
@@ -37,12 +36,11 @@ public class ProductDAO implements IProductDAO {
 	@Override
 	public void addProduct(Product product) throws Exception {
 		try(PreparedStatement p = connection.prepareStatement(INSERT_PRODUCT);) {
-			p.setObject(1, null);
-			p.setString(2, product.getBrand());
-			p.setString(3, product.getModel());
-			p.setString(4, product.getDescription());
+			p.setString(1, product.getBrand());
+			p.setString(2, product.getModel());
+			p.setString(3, product.getDescription());
 			p.setDouble(4, product.getPrice());
-			p.setInt(6, product.getCategory().getCategory_id());
+			p.setInt(5, product.getCategory().getCategory_id());
 		}
 		catch(SQLException e) {
 			e.getMessage();

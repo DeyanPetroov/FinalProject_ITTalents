@@ -22,10 +22,10 @@ public class RegisterServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		String username = req.getParameter("username");
-		String password = req.getParameter("password");
-		String email = req.getParameter("email");
+		String password = req.getParameter("password");		
 		String first_name = req.getParameter("first_name");
 		String last_name = req.getParameter("last_name");
+		String email = req.getParameter("email");
 		Integer age = Integer.valueOf(req.getParameter("age"));
 		
 		if(UserDAO.getInstance().getAllUsers().containsKey(username)) {
