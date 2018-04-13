@@ -33,7 +33,7 @@ public class UserDAO implements IUserDAO {
 	}
 
 	private UserDAO() {
-		connection = DBManager.getConnection();
+		connection = DBManager.getInstance().getConnection();
 	}
 
 	@Override
@@ -158,8 +158,13 @@ public class UserDAO implements IUserDAO {
 		ResultSet resultSet = userByUsername.executeQuery();
 		User user = null;
 		while (resultSet.next()) {
-			user = new User(resultSet.getString("username"), resultSet.getString("password"),
-					resultSet.getString("first_name"), resultSet.getString("last_name"), resultSet.getString("phone"),
+			user = new User(
+					resultSet.getLong("user_id"),
+					resultSet.getString("username"),
+					resultSet.getString("password"),
+					resultSet.getString("first_name"), 
+					resultSet.getString("last_name"), 
+					resultSet.getString("email"),
 					resultSet.getInt("age"));
 		}
 		return user;
