@@ -22,12 +22,14 @@
     <h1>Login</h1>
   </div>
   <div class="login-form">
+  <form action="LoginServlet" method="post">
     <h3>Username:</h3>
-    <input type="text" placeholder="Username"/><br>
+    <input type="text" placeholder="Username" required/><br>
     <h3>Password:</h3>
-    <input type="password" placeholder="Password"/>
+    <input type="password" placeholder="Password" required/>
     <br>
-    <input type="button" value="Login" class="login-button" action="LoginServlet"/>
+    <input type="button" value="Login" class="login-button"/>
+   </form>
     <br>
     <a href="http://localhost:8080/Emag/register.html" class="sign-up">Sign Up!</a>
     <br>

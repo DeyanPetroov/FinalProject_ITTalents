@@ -100,9 +100,8 @@ public class UserDAO implements IUserDAO {
 	}
 	
 	@Override
-	public HashMap<String, User> getAllUsers() {
-		
-		ResultSet result = null;
+	public HashMap<String, User> getAllUsers() {		
+		ResultSet result=null;
 		if(allUsers.isEmpty()){
 			try (PreparedStatement selectAllUsers = connection.prepareStatement(GET_ALL_USERS);) {
 				result = selectAllUsers.executeQuery();

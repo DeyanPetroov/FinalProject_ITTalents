@@ -26,7 +26,7 @@ public class RegisterServlet extends HttpServlet {
 		String first_name = req.getParameter("first_name");
 		String last_name = req.getParameter("last_name");
 		String email = req.getParameter("email");
-		Integer age = Integer.valueOf(req.getParameter("age"));
+		int age = Integer.valueOf(req.getParameter("age"));
 		
 		if(UserDAO.getInstance().getAllUsers().containsKey(username)) {
 			resp.sendRedirect("error.jsp"); //some error page
