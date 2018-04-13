@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +16,9 @@ import model.User;
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	
+	private UserManager manager = UserManager.getInstance();
+	private UserDAO userDAO = UserDAO.getInstance();
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.sendRedirect("index.jsp");
@@ -24,8 +29,14 @@ public class LoginServlet extends HttpServlet {
 		
 		String username = req.getParameter("username");
 		String password = req.getParameter("password");
-		if(UserDAO.getInstance().passwordAndUsernameValidation(username, password)){
-			User u = UserDAO.getInstance().getAllUsers().get(username);
+		if(manager.login(username, password) != null){
+			User u = null;
+			try {
+				u = userDAO.getByUsername(username);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			HttpSession session = req.getSession();
 			session.setAttribute("user", u);
 			session.setMaxInactiveInterval(3000);
