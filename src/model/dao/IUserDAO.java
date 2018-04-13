@@ -1,17 +1,18 @@
 package model.dao;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import model.*;
 
 public interface IUserDAO {
 
+	User getByUsername(String username) throws Exception;
 	User getByID(long id) throws Exception;
 	void saveUser(User u) throws Exception;
 	void updateUser(User u) throws Exception;
 	void changePassword(User u, String password) throws Exception;
-	void deleteUserById(long id) throws Exception;
+	void deleteUserById(User user) throws Exception;
 	List<Order> getAllUserOrders(int user_id) throws Exception;	
+	User getLoggedUser(String username, String password) throws Exception;
 	boolean passwordAndUsernameValidation(String username, String password) throws Exception;
 	HashMap<String, User> getAllUsers() throws Exception;
 }
