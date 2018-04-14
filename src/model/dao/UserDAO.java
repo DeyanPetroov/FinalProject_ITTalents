@@ -54,7 +54,7 @@ public class UserDAO implements IUserDAO {
 
 	// maybe synchronized ?
 	@Override
-	public void saveUser(User u) throws SQLException {
+	public void saveUser(User u) throws SQLException {	
 		PreparedStatement s = connection.prepareStatement(INSERT_USER);
 		s.setString(1, u.getUsername());
 		s.setString(2, u.getPassword());
@@ -90,6 +90,7 @@ public class UserDAO implements IUserDAO {
 	}
 
 	@Override
+
 	public HashMap<String, User> getAllUsers() {
 
 		ResultSet result = null;

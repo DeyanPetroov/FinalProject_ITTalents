@@ -44,7 +44,6 @@ public class UserManager implements IUserManager {
 			this.userDAO.saveUser(u);
 			return true;
 		} catch (SQLException e) {
-			//TODO 
 			e.getMessage();
 		}
 		return false;

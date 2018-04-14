@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import controller.managers.UserManager;
 import model.User;
 import model.dao.*;
 @WebServlet("/RegisterServlet")
@@ -31,6 +32,7 @@ public class RegisterServlet extends HttpServlet {
 		String first_name = req.getParameter("first_name");
 		String last_name = req.getParameter("last_name");
 		String email = req.getParameter("email");
+
 		Integer age = Integer.valueOf(req.getParameter("age"));
 
 		try {

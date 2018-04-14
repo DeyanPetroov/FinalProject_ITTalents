@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
@@ -34,7 +35,7 @@ public class User {
 		this.user_id = id;
 	}
 
-	public User(String username, String password, String first_name, String last_name, String phone, int age) {
+	public User(String username, String password, String first_name, String last_name, String email, int age) {
 		setFirstName(first_name);
 		setLastName(last_name);
 		setUsername(username);
@@ -221,5 +222,9 @@ public class User {
 		else {
 			System.out.println("You must be logged in!");
 		}
+	}
+	
+	public HashSet<Product> getFavouriteProducts() {
+		return (HashSet<Product>) Collections.unmodifiableSet(this.favouriteProducts);
 	}
 }

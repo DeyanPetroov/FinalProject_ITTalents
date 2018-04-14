@@ -6,7 +6,8 @@ import java.sql.SQLException;
 
 public class DBManager {
 	
-	private static final String DB_PASS = "aznadq"; //TODO: input on presentation
+	private static final String DB_PASS = ""; //TODO: input on presentation
+
 	private static final String DB_USER = "root";
 	private static final String DB_PORT = "3306";
 	private static final String DB_IP = "localhost";
@@ -41,7 +42,7 @@ public class DBManager {
 		}
 	}
 	
-	public Connection getConnection() {
+	public static synchronized Connection getConnection() {
 		return connection;
 	}
 }
