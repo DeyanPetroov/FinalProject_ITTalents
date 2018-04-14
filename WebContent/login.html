@@ -23,17 +23,18 @@
 		<div class="login-header">
 			<h1>Login</h1>
 		</div>
-		<form action="LoginServlet" method="POST">
+		
 			<div class="login-form">
+			<form action="LoginServlet" method="post">
 				<h3>Username:</h3>
 				<input type="text" placeholder="Username" /><br>
 				<h3>Password:</h3>
 				<input type="password" placeholder="Password" /> <br> 
-				<input type="button" value="Login" class="login-button"/> <br> <br>
+				<input type="submit" value="Login" class="login-button"/> <br> <br>
 				<a href="/register.html"><input type="button" value="Don't have an account? Sign up!" class="register-button"/> </a> <br> 
-				
+			</form>
 			</div>
-		</form>
+		
 	</div>
 				<a href="http://localhost:8080/Emag/register.html" class="sign-up">Don't have an account? Sign Up!</a> <br>
 				<h6 class="no-access">Can't access your account?</h6>
