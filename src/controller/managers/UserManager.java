@@ -78,29 +78,33 @@ public class UserManager implements IUserManager {
 
 	@Override
 	public void addToCart(User user, Product product, int quantity) {
-		Cart cart = user.getCart();
-		Map<Product, Integer> productsInCart = cart.getProducts();
-		boolean addToCart = true;
-		for(Product p : productsInCart.keySet()) {
-			if(p.equals(product)) {
-				addToCart = false;
-				break;
-			}
-		}
-		
-		if(addToCart) {
+//		Cart cart = user.getCart();
+//		Map<Product, Integer> productsInCart = cart.getProducts();
+//		boolean addToCart = true;
+//		for(Product p : productsInCart.keySet()) {
+//			if(p.equals(product)) {
+//				addToCart = false;
+//				break;
+//			}
+//		}
+//		
+//		if(addToCart) {
 			user.addToCart(product, quantity);
-		}
-		else {
-			//products should have quantity
-			//add the product with the desired quantity + the previous one
-		}
+//		}
+//		else {
+//			//products should have quantity
+//			//add the product with the desired quantity + the previous one
+//		}
 	}
 
 	@Override
 	public void removeFromCart(User user, Product product) {
-		// TODO Auto-generated method stub
-		
+		if(user.getCart().getProducts().containsKey(product)) {
+			user.removeFromCart(product, user.getCart().getProducts().get(product));	
+		}
+		else {
+			System.out.println("No such product in cart.");
+		}
 	}
 
 	@Override
