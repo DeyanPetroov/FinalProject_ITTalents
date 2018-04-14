@@ -42,7 +42,8 @@ h1 {
 
 input[type="text"],
 input[type="password"],
-input[type="number"] {
+input[type="number"],
+input[type="email"] {
   display: block;
   box-sizing: border-box;
   margin-bottom: 20px;
@@ -59,7 +60,8 @@ input[type="number"] {
 
 input[type="text"]:focus,
 input[type="password"]:focus,
-input[type="number"]:focus {
+input[type="number"]:focus
+input[type="email"] {
   border-bottom: 2px solid #16a085;
   color: #16a085;
   transition: 0.2s ease;
