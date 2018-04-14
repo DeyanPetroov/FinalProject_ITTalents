@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
@@ -221,5 +222,9 @@ public class User {
 		else {
 			System.out.println("You must be logged in!");
 		}
+	}
+	
+	public HashSet<Product> getFavouriteProducts() {
+		return (HashSet<Product>) Collections.unmodifiableSet(this.favouriteProducts);
 	}
 }
