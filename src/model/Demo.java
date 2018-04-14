@@ -22,7 +22,7 @@ public class Demo {
         //shte tyrsi izbran ot User-a produkt v magazina i shte go dobavq v kolichkata
         user.addToCart((Product) shop.getProducts().keySet().toArray()[0], 3);
         System.out.println(user.getCart().getTotalCost());
-        user.order();
+      //  user.order();
 
 	}
 }

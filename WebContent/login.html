@@ -10,14 +10,13 @@
 	href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css'>
 
 <link rel="stylesheet" href="./css/loginStyle.css">
+<link href='https://fonts.googleapis.com/css?family=Ubuntu:500'
+		rel='stylesheet' type='text/css'>
 
 
 </head>
 
-<body>
-
-	<link href='https://fonts.googleapis.com/css?family=Ubuntu:500'
-		rel='stylesheet' type='text/css'>
+<body>	
 
 	<div class="login">
 		<div class="login-header">
@@ -25,15 +24,29 @@
 		</div>
 		
 			<div class="login-form">
-			<form action="LoginServlet" method="post">
-				<h3>Username:</h3>
-				<input type="text" placeholder="Username" /><br>
-				<h3>Password:</h3>
-				<input type="password" placeholder="Password" /> <br> 
-				<input type="submit" value="Login" class="login-button"/> <br> <br>
-				<a href="/register.html"><input type="button" value="Don't have an account? Sign up!" class="register-button"/> </a> <br> 
-			</form>
+<!-- 				 <form action="LoginServlet" method="post"> -->
+				 
+<!-- 					<h3>Username:</h3> -->
+<!-- 					<input type="text" name="username" placeholder="Username" /><br> -->
+<!-- 					<h3>Password:</h3> -->
+<!-- 					<input type="password" name="password" placeholder="Password" /> <br>  -->
+<!-- 					<input type="submit" value="Login" class="login-button"/> <br> <br> -->
+<!-- 					<a href="/register.html"><input type="button" value="Don't have an account? Sign up!" class="register-button"/> </a> <br>  -->
+					
+					
+<!-- 				</form> -->
+
+				<form action="LoginServlet" method="post">  
+					Name:<input type="text" name="username" placeholder="Enter your username:"><br>  
+					Password:<input type="password" name="password" placeholder="Enter your password:"><br>  
+					<input type="submit" value=Login>  <br> <br>
+					<a href="/register.html"><input type="button" value="Don't have an account? Sign up!" class="register-button"/> </a>
+				</form> 				
 			</div>
+				
+				
+				 
+			
 		
 	</div>
 				<a href="http://localhost:8080/Emag/register.html" class="sign-up">Don't have an account? Sign Up!</a> <br>
