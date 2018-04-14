@@ -42,7 +42,7 @@ public class DBManager {
 		}
 	}
 	
-	public static synchronized Connection getConnection() {
+	public Connection getConnection() {
 		return connection;
 	}
 }

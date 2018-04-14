@@ -28,7 +28,9 @@ public class UserManager implements IUserManager {
 	public User login(String username, String password) {
 		User user = null;
 		try {
+			System.out.println("============User in DAO: ");
 			user = this.userDAO.getLoggedUser(username, password);
+			System.out.println(user.getUsername() + " " + user.getPassword() + "===============");
 		}
 		catch(SQLException e) {
 			//TODO

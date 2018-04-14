@@ -17,11 +17,13 @@ public class Order {
 	private int status = -1;	
 	private Map<Product, Integer> products;
 	
-	public Order() {
+	public Order(User user) {
+		this.user = user;
 		this.date = LocalDate.now();
-		this.totalCost=0;
+		this.totalCost = 0;
 		this.status = 0;
 		this.products = new TreeMap<Product, Integer>();
+		setProducts(user.getCart().getProducts());
 	}
 
 	public String getStatus() {

@@ -45,8 +45,11 @@ public class UserDAO implements IUserDAO {
 		selectUserById.setLong(1, id);
 		resultSet = selectUserById.executeQuery();
 		while (resultSet.next()) {
-			user = new User(resultSet.getString("username"), resultSet.getString("password"),
-					resultSet.getString("first_name"), resultSet.getString("last_name"), resultSet.getString("phone"),
+			user = new User(resultSet.getString("username"), 
+					resultSet.getString("password"),
+					resultSet.getString("first_name"),
+					resultSet.getString("last_name"),
+					resultSet.getString("phone"),
 					resultSet.getInt("age"));
 		}
 		return user;
@@ -83,7 +86,8 @@ public class UserDAO implements IUserDAO {
 		getOrders.setInt(1, user_id);
 		ResultSet result = getOrders.executeQuery();
 		while (result.next()) {
-			Order order = new Order();
+			User user = getByID(user_id);
+			Order order = new Order(user);
 			userOrders.add(order);
 		}
 		return userOrders;
@@ -135,9 +139,11 @@ public class UserDAO implements IUserDAO {
 		PreparedStatement searchUser = connection.prepareStatement(SEARCH_USER);
 		searchUser.setString(1, username);
 		searchUser.setString(2, password);
-		ResultSet result = searchUser.executeQuery();
-
-		if (result.getInt(1) == 1) {
+		ResultSet result = searchUser.executeQuery();	
+		result.next();
+		
+		int count = result.getInt(1);
+		if(count == 1) {
 			return true;
 		}
 		return false;
