@@ -29,9 +29,11 @@ public class UserManager implements IUserManager {
 		User user = null;
 		try {
 			user = this.userDAO.getLoggedUser(username, password);
+			System.out.println("vliza");
 		}
 		catch(SQLException e) {
 			//TODO
+			System.out.println("vliza ama losho");
 			e.getMessage();
 		}
 		return user;
