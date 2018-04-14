@@ -28,12 +28,9 @@ public class UserManager implements IUserManager {
 	public User login(String username, String password) {
 		User user = null;
 		try {
-			System.out.println("============User in DAO: ");
 			user = this.userDAO.getLoggedUser(username, password);
-			System.out.println(user.getUsername() + " " + user.getPassword() + "===============");
 		}
 		catch(SQLException e) {
-			//TODO
 			e.getMessage();
 		}
 		return user;
@@ -41,7 +38,6 @@ public class UserManager implements IUserManager {
 	
 	public synchronized boolean register(String first_name, String last_name, String email, int age, String username, String password) {
 		User u = new User(username, password, first_name, last_name, email, age);
-		System.out.println(u.getUsername() + " " + u.getPassword() + " " + u.getFirstName() + " " + u.getLastName() + " " + u.getEmail() + " " + u.getAge());
 		try {
 			this.userDAO.saveUser(u);
 			return true;
@@ -78,29 +74,33 @@ public class UserManager implements IUserManager {
 
 	@Override
 	public void addToCart(User user, Product product, int quantity) {
-		Cart cart = user.getCart();
-		Map<Product, Integer> productsInCart = cart.getProducts();
-		boolean addToCart = true;
-		for(Product p : productsInCart.keySet()) {
-			if(p.equals(product)) {
-				addToCart = false;
-				break;
-			}
-		}
-		
-		if(addToCart) {
+//		Cart cart = user.getCart();
+//		Map<Product, Integer> productsInCart = cart.getProducts();
+//		boolean addToCart = true;
+//		for(Product p : productsInCart.keySet()) {
+//			if(p.equals(product)) {
+//				addToCart = false;
+//				break;
+//			}
+//		}
+//		
+//		if(addToCart) {
 			user.addToCart(product, quantity);
-		}
-		else {
-			//products should have quantity
-			//add the product with the desired quantity + the previous one
-		}
+//		}
+//		else {
+//			//products should have quantity
+//			//add the product with the desired quantity + the previous one
+//		}
 	}
 
 	@Override
 	public void removeFromCart(User user, Product product) {
-		// TODO Auto-generated method stub
-		
+		if(user.getCart().getProducts().containsKey(product)) {
+			user.removeFromCart(product, user.getCart().getProducts().get(product));	
+		}
+		else {
+			System.out.println("No such product in cart.");
+		}
 	}
 
 	@Override
