@@ -35,7 +35,7 @@ public class User {
 		this.user_id = id;
 	}
 
-	public User(String username, String password, String first_name, String last_name, String phone, int age) {
+	public User(String username, String password, String first_name, String last_name, String email, int age) {
 		setFirstName(first_name);
 		setLastName(last_name);
 		setUsername(username);
