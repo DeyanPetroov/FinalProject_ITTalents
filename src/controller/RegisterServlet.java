@@ -31,26 +31,7 @@ public class RegisterServlet extends HttpServlet {
 		String first_name = req.getParameter("first_name");
 		String last_name = req.getParameter("last_name");
 		String email = req.getParameter("email");
-<<<<<<< HEAD
-		int age = Integer.valueOf(req.getParameter("age"));
-		
-		if(UserDAO.getInstance().getAllUsers().containsKey(username)) {
-			resp.sendRedirect("error.jsp"); //some error page
-		}
-		else {
-			User u = new User(first_name, last_name, username, password, email, age);
-			UserDAO.getInstance().saveUser(u);
-			if(UserDAO.getInstance().passwordAndUsernameValidation(username, password)){				
-				u = UserDAO.getInstance().getAllUsers().get(username);
-				HttpSession session = req.getSession();
-				session.setAttribute("user", u);
-				session.setMaxInactiveInterval(3000);
-				session.setAttribute("logged", true);
-				resp.sendRedirect("profile.jsp");
-			}
-			else{
-				resp.sendRedirect("errorLogin.html");
-=======
+
 		Integer age = Integer.valueOf(req.getParameter("age"));
 
 		try {
@@ -72,7 +53,6 @@ public class RegisterServlet extends HttpServlet {
 				else {
 					resp.sendRedirect("errorLogin.html");
 				}
->>>>>>> f2cda9de6bb328a2950f2e0e1abb7806e25033b7
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
