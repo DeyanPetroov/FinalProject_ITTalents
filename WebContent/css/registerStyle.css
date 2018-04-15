@@ -82,7 +82,7 @@ input[type="submit"] {
   cursor: pointer;
 }
 
-input[type="button"]{
+input[type="button"] {
   margin-top: 28px;
   width: 250px;
   height: 32px;
