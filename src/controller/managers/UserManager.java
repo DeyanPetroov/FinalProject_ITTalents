@@ -40,6 +40,7 @@ public class UserManager implements IUserManager {
 		User u = new User(username, password, first_name, last_name, email, age);
 		try {
 			this.userDAO.saveUser(u);
+			u.setPassword(u.hashPassword());
 			return true;
 		} catch (SQLException e) {
 			e.getMessage();
@@ -49,29 +50,28 @@ public class UserManager implements IUserManager {
 
 	//maybe this will become one method --> press a button --> add, unpress it --> remove
 	@Override
-	public void addToFavourites(User user, Product product) {
+	public void addOrRemoveFavourite(User user, Product product) {
 		HashSet<Product> favouriteProducts = user.getFavouriteProducts();
 		if(!favouriteProducts.contains(product)) {
 			user.addToFavourites(product);
-			//this.userDao.addToFavourites(product) -- > add to db 
+			try {
+				this.userDAO.addProductToFavourites(user, product);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		else {
-			//already in favourites print a message
-		}
-	}
-
-	@Override
-	public void removeFromFavourites(User user, Product product) {
-		HashSet<Product> favouriteProducts = user.getFavouriteProducts();
-		if(favouriteProducts.contains(product)) {
+			//already in favourites -- > remove it
 			user.removeFromFavourites(product);
-			//this.userDao.removeFromFavourites(product) -- > add to db 
-		}
-		else {
-			//not in favourites print a message
+			try {
+				this.userDAO.removeProductFromFavourites(user, product);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
+	
 	@Override
 	public void addToCart(User user, Product product, int quantity) {
 //		Cart cart = user.getCart();

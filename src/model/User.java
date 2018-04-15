@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
 
+import hashing.BCrypt;
+
 public class User {
 
 	private static final int MIN_PASSWORD_LENGTH = 5;
@@ -163,6 +165,10 @@ public class User {
 		} else {
 			System.out.println("Please log in.");
 		}
+	}
+	
+	public String hashPassword() {
+		return BCrypt.hashpw(this.password, BCrypt.gensalt());
 	}
 
 //	public void changePassword() {
