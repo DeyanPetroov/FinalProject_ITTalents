@@ -30,6 +30,7 @@ public class LoginServlet extends HttpServlet {
 		
 		String username = req.getParameter("username");
 		String password = req.getParameter("password");
+		
 		if(manager.login(username, password) != null){
 			User u = null;
 			try {
@@ -42,9 +43,11 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("user", u);
 			session.setMaxInactiveInterval(3000);
 			session.setAttribute("logged", true);
-			resp.sendRedirect("profile.jsp"); //TODO: create profile.jsp
+			resp.sendRedirect("loggedPage.html"); //TODO: create profile.jsp
 		}
 		else{
+			req.setAttribute("error","Invalid Username or Password");
+			req.getRequestDispatcher("login.html").forward(req, resp);  
 			resp.sendRedirect("errorLogin.html"); //TODO: create such a page
 		}
 	}
