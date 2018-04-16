@@ -63,9 +63,9 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public void saveUser(User u) throws SQLException {
 		try (PreparedStatement s = connection.prepareStatement(INSERT_USER);) {
-			String hashedPassword = u.hashPassword();
+			//String hashedPassword = u.hashPassword();
 			s.setString(1, u.getUsername());
-			s.setString(2, hashedPassword);
+			s.setString(2, u.hashPassword());
 			s.setString(3, u.getFirstName());
 			s.setString(4, u.getLastName());
 			s.setString(5, u.getEmail());
@@ -151,12 +151,10 @@ public class UserDAO implements IUserDAO {
 			try (PreparedStatement searchUser = connection.prepareStatement(SEARCH_USER);) {
 				searchUser.setString(1, username);
 				String hashedPassword = user.getPassword();
-				System.out.println("Hashed password:" + hashedPassword);
 				searchUser.setString(2, hashedPassword);
 				ResultSet result = searchUser.executeQuery();
 				result.next();
 				count = result.getInt(1);
-				System.out.println("Count: " + count);
 			}
 		}
 		if (count == 1) {

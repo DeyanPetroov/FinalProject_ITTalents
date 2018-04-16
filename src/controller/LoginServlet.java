@@ -14,7 +14,7 @@ import controller.managers.UserManager;
 import model.dao.UserDAO;
 import model.User;
 
-@WebServlet("/LoginServlet")
+@WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 	
 	private UserManager manager = UserManager.getInstance();
