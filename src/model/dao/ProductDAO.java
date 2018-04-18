@@ -34,7 +34,7 @@ public class ProductDAO implements IProductDAO {
 	}
 	
 	@Override
-	public void addProduct(Product product) throws Exception {
+	public void addProduct(Product product) throws SQLException {
 		try(PreparedStatement p = connection.prepareStatement(INSERT_PRODUCT);) {
 			p.setString(1, product.getBrand());
 			p.setString(2, product.getModel());
@@ -42,24 +42,18 @@ public class ProductDAO implements IProductDAO {
 			p.setDouble(4, product.getPrice());
 			p.setInt(5, product.getCategory().getCategory_id());
 		}
-		catch(SQLException e) {
-			e.getMessage();
-		}
 	}
 
 	@Override
-	public void deleteProduct(int product_id) throws Exception {
+	public void deleteProduct(int product_id) throws SQLException {
 		try(PreparedStatement p = connection.prepareStatement(DELETE_PRODUCT_BY_ID);){
 			p.setInt(1, product_id);
 			p.executeUpdate();
 		}
-		catch(Exception e) {
-			e.getMessage();
-		}
 	}
 
 	@Override
-	public void updateProduct(Product product) throws Exception {
+	public void updateProduct(Product product) throws SQLException {
 		try(PreparedStatement p = connection.prepareStatement(UPDATE_PRODUCT);){
 			p.setString(1, product.getBrand());
 			p.setString(2, product.getModel());
@@ -68,13 +62,10 @@ public class ProductDAO implements IProductDAO {
 			p.setInt(5, product.getCategory().getCategory_id());
 			p.executeUpdate();
 		}
-		catch(SQLException e) {
-			e.getMessage();
-		}
 	}
 
 	@Override
-	public Product getProductById(int product_id) throws Exception {
+	public Product getProductById(int product_id) throws SQLException {
 		Product product = null;
 		try(PreparedStatement p = connection.prepareStatement(GET_PRODUCT_BY_ID);){
 			p.setInt(1, product_id);
@@ -83,14 +74,11 @@ public class ProductDAO implements IProductDAO {
 				product = new Product(Product.Category.valueOf(resultSet.getString("category_name")), resultSet.getDouble("price"));
 			}
 		}
-		catch(SQLException e) {
-			e.getMessage();
-		}
 		return product;
 	}
 
 	@Override
-	public List<Product> getProductsByCategory(int category_id) throws Exception {
+	public List<Product> getProductsByCategory(int category_id) throws SQLException {
 		List<Product> sameCategoryProducts = new ArrayList<>();
 		try(PreparedStatement p = connection.prepareStatement(GET_ALL_BY_CATEGORY);){
 			p.setInt(1, category_id);
@@ -100,10 +88,6 @@ public class ProductDAO implements IProductDAO {
 				sameCategoryProducts.add(product);
 			}
 		}
-		catch(SQLException e) {
-			e.getMessage();
-		}
 		return sameCategoryProducts;
 	}
-
 }

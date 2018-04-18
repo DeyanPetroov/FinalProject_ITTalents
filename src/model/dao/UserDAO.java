@@ -151,12 +151,10 @@ public class UserDAO implements IUserDAO {
 			try (PreparedStatement searchUser = connection.prepareStatement(SEARCH_USER);) {
 				searchUser.setString(1, username);
 				String hashedPassword = user.getPassword();
-				System.out.println("Hashed password:" + hashedPassword);
 				searchUser.setString(2, hashedPassword);
 				ResultSet result = searchUser.executeQuery();
 				result.next();
 				count = result.getInt(1);
-				System.out.println("Count: " + count);
 			}
 		}
 		if (count == 1) {
