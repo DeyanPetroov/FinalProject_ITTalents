@@ -1,64 +1,91 @@
 package model;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class Order {
-
-	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-	private LocalDate date;
+	
+	private LocalDateTime date;
 	private User user;
 	private double totalCost;
-	private int status = -1;	
+	private int status = -1;
+	private String statusDescription;
+	private String deliveryAddress;
 	private Map<Product, Integer> products;
-	
+
 	public Order(User user) {
 		this.user = user;
-		this.date = LocalDate.now();
+		this.date = LocalDateTime.now();
 		this.totalCost = 0;
 		this.status = 0;
 		this.products = new TreeMap<Product, Integer>();
+		this.deliveryAddress = user.getAddress();
 		setProducts(user.getCart().getProducts());
 	}
 
-	public String getStatus() {
-		switch (status) {
-		case -1:
-			return "No order present.";
-		case 0:
-			return "Your order is awaiting confirmation";
-		case 1:
-			return "Your order has been confirmed and has been shipped.";
-		}
-		return null;
+	//==================GETTERS==================
+
+	public LocalDateTime getDate() {
+		return date;
 	}
 
-	public LocalDate getDate() {
-		return date;
-	}	
-	
 	public User getUser() {
 		return user;
 	}
-	
+
 	public double getTotalCost() {
 		return this.totalCost;
 	}
 
-	public void setTotalCost(double totalCost) {
-		this.totalCost = totalCost;
+	public int getStatus() {
+		return status;
 	}
+
+	public String getStatusDescription() {
+		return statusDescription;
+	}
+
+	public String getDeliveryAddress() {
+		return deliveryAddress;
+	}
+
 
 	public Map<Product, Integer> getProducts() {
 		return Collections.unmodifiableMap(this.products);
 	}
+	
+	//==================SETTERS==================
+	
+	public void setStatusDescription() {
+		switch (status) {
+		case -1:
+			this.statusDescription = "No order present.";
+			break;
+		case 0:
+			this.statusDescription = "Order is awaiting confirmation";
+			break;
+		case 1:
+			this.statusDescription = "Order has been confirmed and has been shipped.";
+			break;
+		case 2:
+			this.statusDescription = "Order has been delivered";
+			break;
+		default:
+			this.statusDescription = "Invalid status";
+			break;
+		}
+	}
 
+	public void setTotalCost(double totalCost) {
+		if (totalCost >= 0) {
+			this.totalCost = totalCost;
+		}
+	}
+	
 	public void setProducts(Map<Product, Integer> products) {
 		this.products = products;
-	}	
+	}
 }
