@@ -15,6 +15,7 @@ public class LogoutServlet extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		session.setAttribute("logged", false);
 		response.sendRedirect("index.html");
+
 	}
 
 	

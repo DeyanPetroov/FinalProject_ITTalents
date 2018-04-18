@@ -60,8 +60,6 @@ public class OrderDAO implements IOrderDAO {
 				User user = getByOrderId(id);
 				order = new Order(user);
 			}
-		} catch (SQLException e) {
-			e.getMessage();
 		}
 		
 		return order;
@@ -73,33 +71,34 @@ public class OrderDAO implements IOrderDAO {
 			removeOrder.setInt(1, order_id);
 			removeOrder.executeUpdate();
 		}
-		catch(SQLException e) {
-			e.getMessage();
-		}
 	}
 
 	@Override
 	public void updateOrderStatus(User user, int status_id) throws SQLException {
-		PreparedStatement updateOrder = connection.prepareStatement(UPDATE_ORDER_STATUS_FOR_USER);
-		updateOrder.setInt(1, status_id);
-		updateOrder.setLong(2, user.getId());
-		updateOrder.executeUpdate();
+		try (PreparedStatement updateOrder = connection.prepareStatement(UPDATE_ORDER_STATUS_FOR_USER);) {
+			updateOrder.setInt(1, status_id);
+			updateOrder.setLong(2, user.getId());
+			updateOrder.executeUpdate();
+		}
 	}
 	
 	@Override
 	public User getByOrderId(int user_id) throws SQLException {
-		PreparedStatement getUser = connection.prepareStatement(GET_USER_BY_ORDER_ID);
-		getUser.setInt(1, user_id);
-		ResultSet result = getUser.executeQuery();
-		
 		User user = null;
-		while(result.next()) {
-			user = new User(result.getString("username"), 
+		try (PreparedStatement getUser = connection.prepareStatement(GET_USER_BY_ORDER_ID);) {
+			getUser.setInt(1, user_id);
+			try (ResultSet result = getUser.executeQuery();) {
+
+				while (result.next()) {
+					user = new User(
+							result.getString("username"), 
 							result.getString("column"),
-							result.getString("first_name"),
-							result.getString("last_name"),
+							result.getString("first_name"), 
+							result.getString("last_name"), 
 							result.getString("email"),
 							result.getInt("age"));
+				}
+			}
 		}
 		return user;
 	}

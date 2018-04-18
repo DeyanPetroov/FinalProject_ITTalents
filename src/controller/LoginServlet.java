@@ -38,6 +38,7 @@ public class LoginServlet extends HttpServlet {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				
 			}
 			HttpSession session = req.getSession();
 			session.setAttribute("user", u);
