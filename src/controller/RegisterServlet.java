@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import controller.managers.UserManager;
 import model.User;
 import model.dao.*;
-@WebServlet("/RegisterServlet")
+@WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
 	
 	private UserManager manager = UserManager.getInstance();

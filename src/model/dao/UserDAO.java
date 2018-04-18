@@ -63,9 +63,9 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public void saveUser(User u) throws SQLException {
 		try (PreparedStatement s = connection.prepareStatement(INSERT_USER);) {
-			String hashedPassword = u.hashPassword();
+			//String hashedPassword = u.hashPassword();
 			s.setString(1, u.getUsername());
-			s.setString(2, hashedPassword);
+			s.setString(2, u.hashPassword());
 			s.setString(3, u.getFirstName());
 			s.setString(4, u.getLastName());
 			s.setString(5, u.getEmail());
