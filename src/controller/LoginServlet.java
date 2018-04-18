@@ -43,6 +43,7 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("user", u);
 			session.setMaxInactiveInterval(3000);
 			session.setAttribute("logged", true);
+			session.setMaxInactiveInterval(60*60);
 			resp.sendRedirect("loggedPage.html"); //TODO: create profile.jsp
 		}
 		else{
