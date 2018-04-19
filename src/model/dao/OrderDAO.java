@@ -12,17 +12,19 @@ public class OrderDAO implements IOrderDAO {
 	
 	private static final String UPDATE_ORDER_STATUS_FOR_USER = "UPDATE orders SET status_id = ? WHERE user_id = ?";
 	private static final String DELETE_ORDER_BY_ID = "DELETE FROM orders WHERE order_id = ?";
-	private static final String NEW_ORDER = "INSERT INTO orders (user_id, date, total_cost, status_id) VALUES (?,?,?,?)"; 
+	private static final String NEW_ORDER = "INSERT INTO orders (date, total_cost, delivery_address, user_id, status_id) VALUES (?,?,?,?,?)"; 
 	private static final String GET_ORDER_BY_ID = 
-			"SELECT o.order_id, o.user_id , o.date, o.total_cost, s.status_description" + 
+			"SELECT o.order_id, o.date, o.total_cost, o.delivery_address, CONCAT(u.first_name, ' ', u.last_name) AS Name, s.status_description" + 
 			"FROM orders AS o" +  
 			"JOIN statuses AS s" + 
-			"ON s.status_id = o.status_id AND o.order_id  = ? ";
+			"ON s.status_id = o.status_id" + 
+			"JOIN users AS u" + 
+			"ON o.user_id = u.user_id AND o.order_id  = ?";
 	private static final String GET_USER_BY_ORDER_ID = 
 			"SELECT u.username, u.password, u.first_name, u.last_name, u.email, u.age " + 
 			"FROM users as u" + 
 			"JOIN orders as o" + 
-			"ON o.user_id = u.user_id where o.user_id = ?";
+			"WHERE o.order_id = ?";
 	
 	private static OrderDAO instance;
 	private Connection connection;
@@ -41,15 +43,16 @@ public class OrderDAO implements IOrderDAO {
 	@Override
 	public void addNewOrder(Order order) throws SQLException {
 		try(PreparedStatement insertOrder = connection.prepareStatement(NEW_ORDER);){
-			insertOrder.setLong(1, order.getUser().getId());
-			insertOrder.setObject(2, order.getDate());
-			insertOrder.setDouble(3, order.getTotalCost());
-			insertOrder.setString(4, order.getStatus());
+			insertOrder.setObject(1, order.getDate());
+			insertOrder.setDouble(2, order.getTotalCost());
+			insertOrder.setString(3, order.getDeliveryAddress());
+			insertOrder.setLong(4, order.getUser().getId());
+			insertOrder.setInt(5, order.getStatus());
 		}
 	}
 
 	@Override
-	public Order getOrderById(int id) throws SQLException {
+	public Order getOrderById(long id) throws SQLException {
 		ResultSet resultSet = null;
 		Order order = null;
 		
@@ -57,7 +60,7 @@ public class OrderDAO implements IOrderDAO {
 			getOrderById.setLong(1, id);
 			resultSet = getOrderById.executeQuery();
 			while (resultSet.next()) {
-				User user = getByOrderId(id);
+				User user = getUserByOrderId(id);
 				order = new Order(user);
 			}
 		}
@@ -66,9 +69,9 @@ public class OrderDAO implements IOrderDAO {
 	}
 
 	@Override
-	public void removeOrder(int order_id) throws SQLException {
+	public void removeOrder(long order_id) throws SQLException {
 		try(PreparedStatement removeOrder = connection.prepareStatement(DELETE_ORDER_BY_ID);){
-			removeOrder.setInt(1, order_id);
+			removeOrder.setLong(1, order_id);
 			removeOrder.executeUpdate();
 		}
 	}
@@ -83,10 +86,10 @@ public class OrderDAO implements IOrderDAO {
 	}
 	
 	@Override
-	public User getByOrderId(int user_id) throws SQLException {
+	public User getUserByOrderId(long order_id) throws SQLException {
 		User user = null;
 		try (PreparedStatement getUser = connection.prepareStatement(GET_USER_BY_ORDER_ID);) {
-			getUser.setInt(1, user_id);
+			getUser.setLong(1, order_id);
 			try (ResultSet result = getUser.executeQuery();) {
 
 				while (result.next()) {

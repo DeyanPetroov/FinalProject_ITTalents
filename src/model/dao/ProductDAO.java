@@ -71,7 +71,7 @@ public class ProductDAO implements IProductDAO {
 			p.setInt(1, product_id);
 			ResultSet resultSet = p.executeQuery();
 			while(resultSet.next()) {
-				product = new Product(Product.Category.valueOf(resultSet.getString("category_name")), resultSet.getDouble("price"));
+				product = new Product().withCategory(Product.Category.valueOf(resultSet.getString("category_name"))).withPrice(resultSet.getDouble("price"));
 			}
 		}
 		return product;
@@ -82,9 +82,9 @@ public class ProductDAO implements IProductDAO {
 		List<Product> sameCategoryProducts = new ArrayList<>();
 		try(PreparedStatement p = connection.prepareStatement(GET_ALL_BY_CATEGORY);){
 			p.setInt(1, category_id);
-			ResultSet result = p.executeQuery();
-			while(result.next()) {
-				Product product = new Product((Product.Category.valueOf(result.getString("category_name"))), result.getDouble("price"));
+			ResultSet resultSet = p.executeQuery();
+			while(resultSet.next()) {
+				Product product = new Product().withCategory(Product.Category.valueOf(resultSet.getString("category_name"))).withPrice(resultSet.getDouble("price"));
 				sameCategoryProducts.add(product);
 			}
 		}
