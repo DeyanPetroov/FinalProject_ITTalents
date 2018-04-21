@@ -13,7 +13,7 @@ public class Review {
 	
 	//================CONSTRUCTORS================
 
-	public Review(int raiting, String text, int reviewerID, int productID) {
+	public Review(int raiting, String text, long reviewerID, long productID) {
 		this.date = LocalDateTime.now(); 
 		this.reviewerID = reviewerID;
 		this.productID = productID;
@@ -21,7 +21,7 @@ public class Review {
 		this.raiting = raiting;
 	}
 	
-	public Review(long reviewID, int raiting, String text, int reviewerID, int productID) {
+	public Review(long reviewID, int raiting, String text, long reviewerID, long productID) {
 		this(raiting, text, reviewerID, productID);
 		this.reviewID = reviewID;
 	}
