@@ -1,6 +1,5 @@
 package controller;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -36,21 +35,19 @@ public class LoginServlet extends HttpServlet {
 			try {
 				u = userDAO.getByUsername(username);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				
+				req.getRequestDispatcher("error.jsp").forward(req, resp);				
 			}
 			HttpSession session = req.getSession();
 			session.setAttribute("user", u);
 			session.setMaxInactiveInterval(3000);
 			session.setAttribute("logged", true);
 			session.setMaxInactiveInterval(60*60);
-			resp.sendRedirect("loggedPage.html"); //TODO: create profile.jsp
+			resp.sendRedirect("index.html"); //TODO: create profile.jsp
 		}
 		else{
 			req.setAttribute("error","Invalid Username or Password");
 			req.getRequestDispatcher("login.html").forward(req, resp);  
-			resp.sendRedirect("errorLogin.html"); //TODO: create such a page
+			//resp.sendRedirect("error.jsp");
 		}
 	}
 
