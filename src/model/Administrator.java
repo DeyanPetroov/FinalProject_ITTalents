@@ -20,15 +20,4 @@ public class Administrator extends User {
 //		return true;
 //	}
 	
-	public void addProduct(Product p) throws Exception {
-		ProductDAO.getInstance().addProduct(p);		
-	}
-
-	public void removeProduct(Product p) {
-		if (p != null) {
-			if (Shop.getInstance().getProducts().containsKey(p)) {
-				Shop.getInstance().getProducts().remove(p);
-			}
-		}
-	}
 }

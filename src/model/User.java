@@ -30,9 +30,11 @@ public class User {
 	private ArrayList<Order> orderHistory = new ArrayList<>();
 	private HashSet<Product> favouriteProducts = new HashSet<>();
 
-	public User(long id, String username, String password, String first_name, String last_name, String phone, int age) {
-		this(username, password, first_name, last_name, phone, age);
+	public User(long id, String username, String password, String first_name, String last_name, String email, String phone, int age, String profilePicture, String address) {
+		this(username, password, first_name, last_name, email, age);
 		this.user_id = id;
+		this.profilePictureURL = profilePicture;
+		this.address = address;
 	}
 
 	//used for registration
@@ -90,6 +92,10 @@ public class User {
 	
 	public String getAddress() {
 		return address;
+	}
+	
+	public String getProfilePictureURL() {
+		return profilePictureURL;
 	}
 	
 	// -----------SETTERS-----------

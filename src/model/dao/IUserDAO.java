@@ -5,9 +5,8 @@ import model.*;
 
 public interface IUserDAO {
 
-	User getByUsername(String username) throws Exception;
 	User getByID(long id) throws Exception;
-	User getLoggedUser(String username, String password) throws Exception;
+	String userExists(String username, String email) throws Exception;
 	void saveUser(User u) throws Exception;
 	void updateUser(User u) throws Exception;
 	void changePassword(User u, String password) throws Exception;
@@ -16,5 +15,5 @@ public interface IUserDAO {
 	void removeProductFromFavourites(User user, Product product) throws Exception;
 	List<Order> getAllUserOrders(int user_id) throws Exception;	
 	HashMap<String, User> getAllUsers() throws Exception;
-	boolean passwordAndUsernameValidation(String username, String password) throws Exception;
+	User getExistingUser(String username, String password) throws Exception;
 }

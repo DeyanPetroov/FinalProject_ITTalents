@@ -7,18 +7,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import hashing.BCrypt;
 import model.*;
+import model.exceptions.WrongUserDataException;
 
 public class UserDAO implements IUserDAO {
 
-	private static final String GET_USER_BY_USERNAME = "SELECT user_id, username, password, first_name, last_name, email, age FROM users WHERE username = ?";
+	private static final String GET_EXISTING_USER_BY_EMAIL = "SELECT user_id, username, password, first_name, last_name, email, phone, age, profile_picture, address FROM users WHERE email = ?";
+	private static final String GET_EXISTING_USER_BY_USERNAME = "SELECT user_id, username, password, first_name, last_name, email, phone, age, profile_picture, address FROM users WHERE username = ?";
+	private static final String GET_USER_BY_USERNAME = "SELECT user_id, username, password, first_name, last_name, email, phone, age, profile_picture, address FROM users WHERE username = ?";
 	private static final String INSERT_USER = "INSERT INTO users (username, password, first_name, last_name, email, age) VALUES (?,?,?,?,?,?)";
-	private static final String GET_USER_BY_ID = "SELECT user_id, username, password, first_name, last_name, email, age FROM users WHERE user_id = ?";
-	private static final String GET_ALL_USERS = "SELECT user_id, username, password, first_name, last_name, email, age FROM users";
-	private static final String UPDATE_USER = "UPDATE users SET first_name = ?, last_name = ?, email = ?, age = ?, WHERE id = ?";
+	private static final String GET_USER_BY_ID = "SELECT user_id, username, password, first_name, last_name, email, phone, age, profile_picture, address FROM users WHERE user_id = ?";
+	private static final String GET_ALL_USERS = "SELECT user_id, username, password, first_name, last_name, email, phone, age, profile_picture, address FROM users";
+	private static final String UPDATE_USER = "UPDATE users SET first_name = ?, last_name = ?, email = ?, phone = ?, age = ?, profile_picture = ?, address = ? WHERE user_id = ?";
 	private static final String DELETE_USER_BY_ID = "DELETE FROM users WHERE user_id = ?";
 	private static final String CHANGE_PASSWORD = "UPDATE users SET password = ? WHERE user_id = ?";
-	private static final String SEARCH_USER = "SELECT COUNT(*) FROM users WHERE username = ? AND password = ?";
 	private static final String GET_ORDERS_FOR_USER = "SELECT date, total_cost, status_id FROM orders WHERE user_id = ?";
 	private static final String INSERT_PRODUCT_INTO_FAVOURITES = "INSERT INTO favouriteproducts (user_id, product_id) VALUES (?,?)";
 	private static final String REMOVE_FROM_FAVOURITES = "DELETE FROM favouriteproducts WHERE user_id = ? AND product_id = ?";
@@ -48,14 +52,19 @@ public class UserDAO implements IUserDAO {
 			resultSet = selectUserById.executeQuery();
 			while (resultSet.next()) {
 				user = new User(
+						resultSet.getLong("user_id"),
 						resultSet.getString("username"), 
 						resultSet.getString("password"),
 						resultSet.getString("first_name"),
 						resultSet.getString("last_name"),
+						resultSet.getString("email"),
 						resultSet.getString("phone"), 
-						resultSet.getInt("age"));
+						resultSet.getInt("age"),
+						resultSet.getString("profile_picture"),
+						resultSet.getString("address"));
 			}
 		}
+		resultSet.close();
 		return user;
 	}
 
@@ -63,7 +72,6 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public void saveUser(User u) throws SQLException {
 		try (PreparedStatement s = connection.prepareStatement(INSERT_USER);) {
-			//String hashedPassword = u.hashPassword();
 			s.setString(1, u.getUsername());
 			s.setString(2, u.hashPassword());
 			s.setString(3, u.getFirstName());
@@ -81,8 +89,11 @@ public class UserDAO implements IUserDAO {
 			update.setString(1, u.getFirstName());
 			update.setString(2, u.getLastName());
 			update.setString(3, u.getEmail());
-			update.setInt(4, u.getAge());
-			update.setLong(5, u.getId());
+			update.setString(4, u.getPhone());
+			update.setInt(5, u.getAge());
+			update.setString(6, u.getProfilePictureURL());
+			update.setString(7, u.getAddress());
+			update.setLong(8, u.getId());
 			update.executeUpdate();
 		}
 	}
@@ -106,25 +117,34 @@ public class UserDAO implements IUserDAO {
 	//get hashmap of all users
 	@Override
 	public HashMap<String, User> getAllUsers() throws SQLException {
-		ResultSet result = null;
+		ResultSet resultSet = null;
 		if (allUsers.isEmpty()) {
 			try (PreparedStatement selectAllUsers = connection.prepareStatement(GET_ALL_USERS);) {
-				result = selectAllUsers.executeQuery();
-				while (result.next()) {
-					User u = new User(result.getInt("id"), result.getString("username"), result.getString("password"),
-							result.getString("first_name"), result.getString("last_name"), result.getString("email"),
-							result.getInt("age"));
+				resultSet = selectAllUsers.executeQuery();
+				while (resultSet.next()) {
+					User u = new User(
+							resultSet.getLong("user_id"),
+							resultSet.getString("username"), 
+							resultSet.getString("password"),
+							resultSet.getString("first_name"),
+							resultSet.getString("last_name"),
+							resultSet.getString("email"),
+							resultSet.getString("phone"), 
+							resultSet.getInt("age"),
+							resultSet.getString("profile_picture"),
+							resultSet.getString("address"));
 					allUsers.put(u.getUsername(), u);
 				}
 			}
 		}
+		resultSet.close();
 		return allUsers;
 	}
 
 	//change password of user
 	@Override
-	public void changePassword(User u, String password) throws SQLException {
-		if (passwordAndUsernameValidation(u.getUsername(), password)) {
+	public void changePassword(User u, String password) throws SQLException, WrongUserDataException {
+		if (getExistingUser(u.getUsername(), password) != null) {
 			try (PreparedStatement changePass = connection.prepareStatement(CHANGE_PASSWORD);) {
 				changePass.setString(1, u.getUsername());
 				changePass.setString(2, password);
@@ -142,56 +162,44 @@ public class UserDAO implements IUserDAO {
 		}
 	}
 
-	// validate password and username
+	//get User after validating password and username
 	@Override
-	public boolean passwordAndUsernameValidation(String username, String password) throws SQLException {
-		int count = 0;
-		User user = this.getByUsername(username);
-		if (user != null) {
-			try (PreparedStatement searchUser = connection.prepareStatement(SEARCH_USER);) {
-				searchUser.setString(1, username);
-				String hashedPassword = user.getPassword();
-				searchUser.setString(2, hashedPassword);
-				ResultSet result = searchUser.executeQuery();
-				result.next();
-				count = result.getInt(1);
-			}
-		}
-		if (count == 1) {
-			return true;
-		}
-		return false;
-	}
-
-	//search for a user in the database
-	@Override
-	public User getLoggedUser(String username, String password) throws SQLException {
+	public User getExistingUser(String username, String password) throws SQLException, WrongUserDataException {
 		User user = null;
-		if (passwordAndUsernameValidation(username, password)) {
-			user = getByUsername(username);
+		try (PreparedStatement ps = connection.prepareStatement(GET_USER_BY_USERNAME);) {
+			ps.setString(1, username);
+			try (ResultSet result = ps.executeQuery()) {
+				if (result.next()) {
+					String hashedPassword = result.getString("password");
+					if(BCrypt.checkpw(password, hashedPassword)) {
+						user = getByID(result.getInt("user_id"));
+					}
+				}
+			}
 		}
 		return user;
 	}
 
-	//get user by username
+	//search for an existing user in the database
 	@Override
-	public User getByUsername(String username) throws SQLException {
-		User user = null;
-		try (PreparedStatement userByUsername = connection.prepareStatement(GET_USER_BY_USERNAME);) {
-			userByUsername.setString(1, username);
-			ResultSet resultSet = userByUsername.executeQuery();
-			while (resultSet.next()) {
-				user = new User(
-						resultSet.getLong("user_id"), 
-						resultSet.getString("username"),
-						resultSet.getString("password"), 
-						resultSet.getString("first_name"),
-						resultSet.getString("last_name"), 
-						resultSet.getString("email"), 
-						resultSet.getInt("age"));
+	public String userExists(String username, String email) throws SQLException {
+		try(PreparedStatement usernameExists = connection.prepareStatement(GET_EXISTING_USER_BY_USERNAME);){
+			usernameExists.setString(1, username);
+			try(ResultSet result = usernameExists.executeQuery()){
+				if(result.next()) {
+					return username;
+				}
 			}
 		}
-		return user;
+		try(PreparedStatement emailExists = connection.prepareStatement(GET_EXISTING_USER_BY_EMAIL);){
+			emailExists.setString(1, email);
+			try(ResultSet result = emailExists.executeQuery()){
+				if(result.next()) {
+					return email;
+				}
+			}
+		}
+		return null;
 	}
 
 	// add product to favourites in the database

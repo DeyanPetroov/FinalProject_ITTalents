@@ -2,12 +2,11 @@ package controller.managers;
 
 import java.sql.SQLException;
 import java.util.HashSet;
-import java.util.Map;
 
-import model.Cart;
 import model.Product;
 import model.User;
 import model.dao.UserDAO;
+import model.exceptions.WrongUserDataException;
 
 public class UserManager implements IUserManager {
 
@@ -25,14 +24,8 @@ public class UserManager implements IUserManager {
 		return instance;
 	}
 	
-	public User login(String username, String password) {
-		User user = null;
-		try {
-			user = this.userDAO.getLoggedUser(username, password);
-		}
-		catch(SQLException e) {
-			e.getMessage();
-		}
+	public User login(String username, String password) throws SQLException, WrongUserDataException {
+		User user = this.userDAO.getExistingUser(username, password);
 		return user;
 	}
 	
