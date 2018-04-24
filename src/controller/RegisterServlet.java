@@ -55,7 +55,7 @@ public class RegisterServlet extends HttpServlet {
 					respînse.sendRedirect("index.html");
 				} 
 				else {
-					respînse.sendRedirect("errorLogin.html");
+					throw new WrongUserDataException();
 				}
 			}
 		}
